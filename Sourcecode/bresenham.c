@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<GL/glut.h>
+#include<math.h>
 
 int xs,xe,ys,ye;
 
@@ -15,27 +16,32 @@ void setpixel(int x,int y)
     glColor3f(1.0,0.0,0.0);
     glBegin(GL_POINTS);
         glVertex2f(x,y);
-    glEnd(); 
+    glEnd();
+    glFlush();
 }
 
-void dda()
+void bresenham()
 {
-    int dx,dy,steps,i;
-    glClear(GL_COLOR_BUFFER_BIT);
+    int d,dy,dx;
     dx = abs(xe - xs);
     dy = abs(ye - ys);
-    if(dx>dy)
-        steps  = dx;
-    else
-        steps = dy;
-    for(i=0;i<steps;i++)
+    d = 2*dy - dx;
+    setpixel(xs,ys);
+    while(xs<=xe)
     {
+        if(d>0)
+        {
+            ys = ys + 1;
+            d = 2*(dy - dx);
+        }
+        else
+        {
+            d = 2*dy;  
+        }
+        xs = xs + 1;
         setpixel(xs,ys);
-        printf("%d\t%d\n",xs,ys);
-        xs = xs + (dx/steps);
-        ys = ys + (dy/steps);
-        glFlush();
     }
+
 }
 
 int main(int argc,char* argv[])
@@ -44,9 +50,9 @@ int main(int argc,char* argv[])
     glutInit(&argc,argv);
     glutInitWindowPosition(50,50);
     glutInitWindowSize(300,300);
-    glutCreateWindow("DDA");
+    glutCreateWindow("BRESENHAM");
     init();
-    glutDisplayFunc(dda);
+    glutDisplayFunc(bresenham);
     glutMainLoop();
     return 0;
 }
