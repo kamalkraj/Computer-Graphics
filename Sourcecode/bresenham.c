@@ -29,14 +29,14 @@ void bresenham()
     setpixel(xs,ys);
     while(xs<=xe)
     {
-        if(d>0)
+        if(d<0)
         {
-            ys = ys + 1;
-            d = 2*(dy - dx);
+            d = 2*dy;
         }
         else
         {
-            d = 2*dy;  
+            ys = ys + 1;
+            d = 2*(dy - dx);  
         }
         xs = xs + 1;
         setpixel(xs,ys);
